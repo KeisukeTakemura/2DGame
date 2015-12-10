@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout1">
+    tools:context=".MainActivity">
+
+    <SurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginTop="0dp"
+        android:id="@+id/surfaceView1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2">
+
+
+        <ImageButton
+            android:text="←→"
+            android:src="@drawable/dir_key"
+            android:scaleType="fitXY"
+            android:background="#00FFFFFF"
+            android:textSize="100dp"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:id="@+id/DirButton" />
+       <!-- <Button
+            android:text="→"
+            android:textSize="100dp"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:id="@+id/RightButton" />-->
+        <ImageButton
+            android:text="B"
+            android:textSize="100dp"
+            android:src="@drawable/b_button"
+            android:scaleType="fitXY"
+            android:background="#00FFFFFF"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="275dp"
+            android:id="@+id/weapon" />
+
+        <ImageButton
+            android:text="A"
+            android:src="@drawable/a_button"
+            android:scaleType="fitXY"
+            android:textSize="100dp"
+            android:layout_width="160dp"
+            android:background="#00FFFFFF"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/weapon"
+            android:id="@+id/jump" />
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <drawable name="translucent_gameover">#44FF0000</drawable>
+    <style name="Theme.MyTransGameOver" parent="android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowBackground">@drawable/translucent_gameover</item>
+    </style>
+
+    <drawable name="translucent_goal">#44f7ff00</drawable>
+    <style name="Theme.MyTransGoal" parent="android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowBackground">@drawable/translucent_goal</item>
+    </style>
+
+</resources>
