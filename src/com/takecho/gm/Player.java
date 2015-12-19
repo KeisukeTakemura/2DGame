@@ -10,9 +10,10 @@ import sprite.Sprite;
 /**
  * Created by Keisuke on 2014/12/31.
  */
+
 public class Player{
-    private static final int JUMP_SPEED = 30;
-    public int SPEED = 10;
+    private static final int JUMP_SPEED = 70;
+    public int SPEED = 15;
 
     private double x;
     private double y;
@@ -79,7 +80,7 @@ public class Player{
     }
 
     public void update() {
-        vy += 1.8;
+        vy += 8.0;
 
         double newX = x + vx;
         Point tile = map.getTileCollision(this, newX, y, map.getMap());
@@ -150,7 +151,9 @@ public class Player{
     }
 
     public void speedUp(int s){
-        SPEED += s;
+        if(SPEED <= 20){
+        	SPEED += s;
+        }
     }
 
     public void stop(){

@@ -22,6 +22,7 @@ public abstract class Sprite {
 
     protected int size;
     protected boolean flag = false;
+    
 
     public Sprite(int x, int y,int size,Bitmap filename, Map map) {
         this.x = x;
@@ -30,8 +31,8 @@ public abstract class Sprite {
         this.size = size;
         this.image = filename;
 
-        width = 100;
-        height = 100;
+        width = 50;
+        height = 50;
 
     }
 
@@ -43,8 +44,8 @@ public abstract class Sprite {
         this.image = filename;
         this.flag = flag;
 
-        width = 100;
-        height = 100;
+        width = 50;
+        height = 50;
 
     }
 

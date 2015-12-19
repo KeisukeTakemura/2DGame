@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ssss"
+    android:gravity="center_horizontal"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.takecho.gm.StageSelectActivity" >
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="200dip"
+        android:layout_height="70dip"
+        android:layout_marginTop="10dip"
+        android:layout_weight="1"
+        android:onClick="stage1" />
+
+    <ImageButton
+        android:layout_width="200dip"
+        android:layout_height="70dip"
+        android:layout_marginTop="310dip"
+        android:layout_weight="1"
+        android:onClick="stage3" />
+
+    <ImageButton
+        android:layout_width="200dip"
+        android:layout_height="70dip"
+        android:layout_alignLeft="@+id/imageButton1"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:onClick="stage2" />
+
+</RelativeLayout>

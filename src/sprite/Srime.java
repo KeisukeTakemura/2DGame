@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.util.Log;
-
 import data.Map;
 
 /**
@@ -28,6 +26,13 @@ public class Srime extends Sprite{
         this.vx = -SPEED;
         this.vy = 0;
     }
+    
+    public void death(){
+    	vx = 0;
+    	vy = 0;
+    	
+    }
+    
 
     public void draw(Canvas c, Paint p,int offsetX, int offsetY,int count){
         p.setColor(Color.BLUE);

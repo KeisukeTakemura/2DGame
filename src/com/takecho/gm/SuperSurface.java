@@ -42,13 +42,14 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     public Bitmap dragon;
     public Bitmap coin;
     public Bitmap goal;
+    public Bitmap aaaa;
 
-    private static final int TILE_SIZE = 100;
+    private static final int TILE_SIZE = 50;
 //map,playerインスタンスの生成
 
     public  Map m = new Map(MainActivity.stageGet());
     public Point p_point = MainActivity.playerGet(MainActivity.stageGet());
-    public Player player = new Player(p_point.x,p_point.y,96,m);
+    public Player player = new Player(p_point.x,p_point.y,50,m);
     //public Coin
     public int timer = 0;
     public int count = 0;
@@ -94,6 +95,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         dragon = BitmapFactory.decodeResource(res, R.drawable.player);
         coin = BitmapFactory.decodeResource(res, R.drawable.elect);
         goal = BitmapFactory.decodeResource(res, R.drawable.goaltile);
+        aaaa = BitmapFactory.decodeResource(res, R.drawable.aaaa);
         //使用する画像データの用意
     }
 
@@ -126,12 +128,12 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
             int offsetX = screen_width / 2 - (int)player.getX();
             //端のスクロール
             offsetX = Math.min(offsetX, 0);
-            offsetX = Math.max(offsetX, screen_width - mapX*100);
+            offsetX = Math.max(offsetX, screen_width - mapX*TILE_SIZE);
 
             //横のスクロール
             int offsetY = screen_height / 2 - (int)player.getY() - 205;
             offsetY = Math.min(offsetY,0);
-            offsetY = Math.max(offsetY, screen_height - mapY*100);
+            offsetY = Math.max(offsetY, screen_height - mapY*TILE_SIZE);
 
             int maaa[][] = m.getMap();
             for (int y = 0; y < maaa.length; y++) {
@@ -144,12 +146,12 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                             break;
                         case 3:
                             if(testflag){
-                                sprites.add(new Goal(x,y,100,goal,m,true));
+                                sprites.add(new Goal(x,y,TILE_SIZE,goal,m,true));
                             }
                             break;
                         case 4:
                             if(testflag){
-                                sprites.add(new Srime(x*100,y*100,100,ppp,m));
+                                sprites.add(new Srime(x*TILE_SIZE,y*TILE_SIZE,TILE_SIZE,ppp,m));
                             }
                             break;
                     }
@@ -172,11 +174,11 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
 //ブロックの描画
 
                 int firstTileX = Map.pixelsToTiles(-offsetX);
-                int lastTileX = firstTileX + Map.pixelsToTiles(mapX*100) + 1;
+                int lastTileX = firstTileX + Map.pixelsToTiles(mapX*TILE_SIZE) + 1;
                 lastTileX = Math.min(lastTileX, mapX);
 
                 int firstTileY = Map.pixelsToTiles(-offsetY);
-                int lastTileY = firstTileY + Map.pixelsToTiles(mapY*100) + 1;
+                int lastTileY = firstTileY + Map.pixelsToTiles(mapY*TILE_SIZE) + 1;
                 lastTileY = Math.min(lastTileY, mapY);
 
 
@@ -186,10 +188,11 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     for (int x = firstTileX; x < lastTileX; x++) {
                         switch (m.getMap()[y][x]) {
                             case 1:
-                                //canvas.drawRect(100 * x + offsetX, 100 * y, 100 * x + 100+offsetX, 100 * y + 100, paint);
-                                int width = block.getWidth();
-                                int height = block.getHeight();
-                               canvas.drawBitmap(block,width*x+offsetX, height*y+offsetY ,paint);
+                                //canvas.drawRect(TILE_SIZE * x + offsetX, TILE_SIZE * y, TILE_SIZE * x + TILE_SIZE+offsetX, TILE_SIZE * y + TILE_SIZE, paint);
+                                int width = aaaa.getWidth();
+                                int height = aaaa.getHeight();
+                                //Rect r = new Rect(width*x+offsetX,height*y+offsetY,width*x+offsetX+width,height*y+offsetY+height);
+                               canvas.drawBitmap(aaaa,width*x+offsetX, height*y+offsetY ,paint);
                                 break;
                          /*   case 2:
                                if(testflag) {
@@ -198,12 +201,12 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                                 break;
                             case 3:
                                 if(testflag){
-                                    sprites.add(new Goal(x,y,100,ppp,m,true));
+                                    sprites.add(new Goal(x,y,TILE_SIZE,ppp,m,true));
                                 }
                                 break;
                             case 4:
                                 if(testflag){
-                                    sprites.add(new Srime(x*100,y*100,100,ppp,m));
+                                    sprites.add(new Srime(x*TILE_SIZE,y*TILE_SIZE,TILE_SIZE,ppp,m));
                                 }
                                 break;*/
                         }
@@ -271,8 +274,9 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                            /* paint.setTextSize(300);
                             canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
                             canvas.drawText("GAME OVER!!", 230, 400, paint);*/
-                            thread = null;
-                            getContext().startActivity(new Intent(getContext(), GameOverActivity.class));
+                            ((Srime) sprite).death();
+                            //thread = null;
+                            //getContext().startActivity(new Intent(getContext(), GameOverActivity.class));
                             //Thread.sleep(2000);
                             break;
                         }

@@ -8,5 +8,7 @@
     <string name="title_activity_stage_select">StageSelectActivity</string>
     <string name="title_activity_game_over">GameOverActivity</string>
     <string name="title_activity_goal">GoalActivity</string>
+    <string name="B">B</string>
+    <string name="A">A</string>
 
 </resources>
