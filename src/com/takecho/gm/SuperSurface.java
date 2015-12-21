@@ -42,14 +42,13 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     public Bitmap dragon;
     public Bitmap coin;
     public Bitmap goal;
-    public Bitmap aaaa;
-
-    private static final int TILE_SIZE = 50;
+    //public Bitmap aaaa;
+    
+    public static int TILE_SIZE;
 //map,playerインスタンスの生成
-
-    public  Map m = new Map(MainActivity.stageGet());
-    public Point p_point = MainActivity.playerGet(MainActivity.stageGet());
-    public Player player = new Player(p_point.x,p_point.y,50,m);
+    public  Map m;
+    public Point p_point;
+    public Player player;
     //public Coin
     public int timer = 0;
     public int count = 0;
@@ -78,8 +77,18 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         holder.addCallback(this);
         i = new Intent(context,StageSelectActivity.class);
         loadMusic(context);
+        loadImage();
+        loadMap();
         mediaPlayer = MediaPlayer.create(context,R.raw.spring_come);
         mediaPlayer.start();
+    }
+    
+    private void loadMap(){
+    		TILE_SIZE = block.getWidth();
+    	//map,playerインスタンスの生成
+    	    m = new Map(MainActivity.stageGet());
+    	    p_point = MainActivity.playerGet(MainActivity.stageGet());
+    	    player = new Player(p_point.x,p_point.y,50,m);
     }
 
     private void loadMusic(Context context){
@@ -95,7 +104,8 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         dragon = BitmapFactory.decodeResource(res, R.drawable.player);
         coin = BitmapFactory.decodeResource(res, R.drawable.elect);
         goal = BitmapFactory.decodeResource(res, R.drawable.goaltile);
-        aaaa = BitmapFactory.decodeResource(res, R.drawable.aaaa);
+        //aaaa = BitmapFactory.decodeResource(res, R.drawable.aaaa);
+        //TILE_SIZE = block.getWidth();
         //使用する画像データの用意
     }
 
@@ -117,7 +127,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         //ball
         paint.setStyle(Paint.Style.FILL);
 //loadImage
-        loadImage();
+        //loadImage();
 
         int mapX = m.getMap()[0].length;
         int mapY = m.getMap().length;
@@ -189,10 +199,10 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                         switch (m.getMap()[y][x]) {
                             case 1:
                                 //canvas.drawRect(TILE_SIZE * x + offsetX, TILE_SIZE * y, TILE_SIZE * x + TILE_SIZE+offsetX, TILE_SIZE * y + TILE_SIZE, paint);
-                                int width = aaaa.getWidth();
-                                int height = aaaa.getHeight();
+                                int width = block.getWidth();
+                                int height = block.getHeight();
                                 //Rect r = new Rect(width*x+offsetX,height*y+offsetY,width*x+offsetX+width,height*y+offsetY+height);
-                               canvas.drawBitmap(aaaa,width*x+offsetX, height*y+offsetY ,paint);
+                               canvas.drawBitmap(block,width*x+offsetX, height*y+offsetY ,paint);
                                 break;
                          /*   case 2:
                                if(testflag) {

@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.util.Log;
 
 import com.takecho.gm.Player;
+import com.takecho.gm.SuperSurface;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -18,7 +19,7 @@ import sprite.Sprite;
  */
 public class Map {
 
-    private static final int TILE_SIZE = 50;
+    private static final int TILE_SIZE = SuperSurface.TILE_SIZE;
    //private static final int ROW = 6;
     //private static final int COL = 20;
 

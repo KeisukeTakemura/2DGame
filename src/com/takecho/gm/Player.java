@@ -73,7 +73,7 @@ public class Player{
         int gx =(int)sprite.getX();
         int gy =(int)sprite.getY();
 
-        if (playerRect.intersects(gx+20,gy+20, gx+80, gy+70)) {
+        if (playerRect.intersects(gx,gy, gx+50, gy+50)) {
             return true;
         }
         return false;
