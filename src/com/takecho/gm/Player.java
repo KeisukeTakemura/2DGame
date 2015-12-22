@@ -88,7 +88,7 @@ public class Player{
             x = newX;
         } else {
             if (vx > 0) {
-                Log.d("why","なんでや");
+                //Log.d("why","なんでや");
                 x = Map.tilesToPixels(tile.x) - playerSize;
             } else if (vx < 0) {
                 x = Map.tilesToPixels(tile.x + 1);
@@ -103,7 +103,7 @@ public class Player{
             y = newY;
             onG = false;
         } else {
-            if (vy > 0) {
+            if (vy > -6) {
                 y = Map.tilesToPixels(tile.y) - playerSize;
                 vy = 0;
                 onG = true;
@@ -134,6 +134,10 @@ public class Player{
 
     public double getY(){
         return y;
+    }
+    
+    public double getVX(){
+    	return vx;
     }
 
     public int getSize() { return playerSize;}

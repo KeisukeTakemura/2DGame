@@ -31,8 +31,8 @@ public abstract class Sprite {
         this.size = size;
         this.image = filename;
 
-        width = 50;
-        height = 50;
+        width = size;
+        height = size;
 
     }
 
@@ -44,8 +44,8 @@ public abstract class Sprite {
         this.image = filename;
         this.flag = flag;
 
-        width = 50;
-        height = 50;
+        width = size;
+        height = size;
 
     }
 

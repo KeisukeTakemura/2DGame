@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -42,9 +43,13 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     public Bitmap dragon;
     public Bitmap coin;
     public Bitmap goal;
-    //public Bitmap aaaa;
+    public Bitmap aaaa;
+    public Bitmap vvvv;
+    //public Bitmap block2;
     
     public static int TILE_SIZE;
+    public static int TILE_WIDTH_NUM = 20;
+    public static float Mult;
 //map,playerインスタンスの生成
     public  Map m;
     public Point p_point;
@@ -52,7 +57,17 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     //public Coin
     public int timer = 0;
     public int count = 0;
-
+    public int playerTimer = 0;
+    public int playerCount = 0;
+    
+    float scale = getResources().getDisplayMetrics().density;
+ //画面サイズの設定
+   /* final float VIEW_WIDTH = 1200;
+    final float VIEW_HEIGHT = 500;
+    float scaleX;
+    float scaleY;
+    float scale;
+*/
 
 //その他準備
     Thread thread;
@@ -78,14 +93,13 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         i = new Intent(context,StageSelectActivity.class);
         loadMusic(context);
         loadImage();
-        loadMap();
+       // loadMap();
         mediaPlayer = MediaPlayer.create(context,R.raw.spring_come);
         mediaPlayer.start();
     }
     
     private void loadMap(){
-    		TILE_SIZE = block.getWidth();
-    	//map,playerインスタンスの生成
+    		
     	    m = new Map(MainActivity.stageGet());
     	    p_point = MainActivity.playerGet(MainActivity.stageGet());
     	    player = new Player(p_point.x,p_point.y,50,m);
@@ -99,12 +113,19 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
 
     private void loadImage(){
         Resources res = this.getContext().getResources();
+        //サイズ変更設定
+        //Matrix matrix = new Matrix();
+        //matrix.postScale(screen_height/(9*100), 5);
+        //
         ppp = BitmapFactory.decodeResource(res, R.drawable.enemy);
         block = BitmapFactory.decodeResource(res, R.drawable.block);
+        //block2 = BitmapFactory.decodeResource(res, R.drawable.block2);
         dragon = BitmapFactory.decodeResource(res, R.drawable.player);
         coin = BitmapFactory.decodeResource(res, R.drawable.elect);
         goal = BitmapFactory.decodeResource(res, R.drawable.goaltile);
-        //aaaa = BitmapFactory.decodeResource(res, R.drawable.aaaa);
+        aaaa = BitmapFactory.decodeResource(res, R.drawable.player);
+        
+        //vvvv = Bitmap.createBitmap(aaaa, 0, 0, aaaa.getWidth(),aaaa.getHeight(), matrix,true);
         //TILE_SIZE = block.getWidth();
         //使用する画像データの用意
     }
@@ -114,8 +135,20 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     @Override
     public void run() {
 
-        Log.d("x:", "" + screen_width);
-        Log.d("y:",""+screen_height);
+        //Log.d("x:", "" + screen_width);
+        //Log.d("y:",""+screen_height);
+    	
+    	//TILE_SIZE = block.getWidth();
+		TILE_SIZE =(screen_width / TILE_WIDTH_NUM);
+		//怒りのfloat祭り
+		Mult = (float)((float)((float)screen_width / (float)TILE_WIDTH_NUM) / (float)block.getWidth());
+		
+		 loadMap();
+		//Log.d("Size", ""+TILE_SIZE);
+		//TILE_SIZE = screen_height / 9;
+		//Log.d("Now", ""+ Mult  + ":" + TILE_SIZE);
+		
+	//map,playerインスタンスの生成
 
         Canvas canvas = null;
         Paint paint = new Paint();
@@ -141,7 +174,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
             offsetX = Math.max(offsetX, screen_width - mapX*TILE_SIZE);
 
             //横のスクロール
-            int offsetY = screen_height / 2 - (int)player.getY() - 205;
+            int offsetY = screen_height / 2 - (int)player.getY() - 105;
             offsetY = Math.min(offsetY,0);
             offsetY = Math.max(offsetY, screen_height - mapY*TILE_SIZE);
 
@@ -151,7 +184,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     switch (m.getMap()[y][x]) {
                         case 2:
                             if(testflag) {
-                                sprites.add(new Coin(x, y, 96, coin, m));
+                                sprites.add(new Coin(x, y, TILE_SIZE, coin, m));
                             }
                             break;
                         case 3:
@@ -175,8 +208,12 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
 
                 //キャンバスロック
                 canvas = holder.lockCanvas();
+              //  canvas.translate((screen_width - VIEW_WIDTH)/2*scale, (screen_height - VIEW_HEIGHT)/2*scale);
+              //  canvas.scale(scale, scale);
 
                 canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
+                
+                //Log.d("aaaaa", ""+(float)block.getWidth() * (float)Mult);
 
 
 
@@ -199,10 +236,14 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                         switch (m.getMap()[y][x]) {
                             case 1:
                                 //canvas.drawRect(TILE_SIZE * x + offsetX, TILE_SIZE * y, TILE_SIZE * x + TILE_SIZE+offsetX, TILE_SIZE * y + TILE_SIZE, paint);
-                                int width = block.getWidth();
-                                int height = block.getHeight();
+                                int width = (int)(block.getWidth() * Mult);
+                                int height = (int)(block.getHeight() * Mult);
+                                //Log.d("tes7uyfgd", ""+ width);
+                                Rect src = new Rect(0,0,block.getWidth(),block.getHeight());
+                                Rect dst = new Rect(width*x+offsetX, height*y+offsetY,width*x+offsetX+width, height*y+offsetY+height);
                                 //Rect r = new Rect(width*x+offsetX,height*y+offsetY,width*x+offsetX+width,height*y+offsetY+height);
-                               canvas.drawBitmap(block,width*x+offsetX, height*y+offsetY ,paint);
+                               //canvas.drawBitmap(block,width*x+offsetX, height*y+offsetY ,paint);
+                                canvas.drawBitmap(block, src,dst,paint);
                                 break;
                          /*   case 2:
                                if(testflag) {
@@ -230,10 +271,11 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 int dir = player.getDir();
                 int size = player.getSize();
                 paint.setColor(Color.BLUE);
-                Rect src = new Rect(count*size,dir*size,count*size+size,dir*size+size);
+                Rect src = new Rect(playerCount*size,dir*size,playerCount*size+size,dir*size+size);
                 Rect dst = new Rect(px+offsetX ,py+offsetY , px+offsetX+size, py+offsetY+size);
                 //canvas.drawBitmap(dragon, px+offsetX ,py,paint);// px+size+offsetX, py+size, paint);
                canvas.drawBitmap(dragon, src,dst,paint);
+               //canvas.drawBitmap(vvvv, src,dst,paint);
 
                 if(player.getB()){
                     paint.setColor(Color.GREEN);
@@ -250,7 +292,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     sprite.draw(canvas, paint, offsetX, offsetY, count);
                     sprite.update();
                     if (player.isCollision(sprite)) {
-                        Log.d("chad", "の例圧が・・・消えた？");
+                        //Log.d("chad", "の例圧が・・・消えた？");
                         // それがコインだったら
                         if (sprite instanceof Coin) {
 
@@ -258,7 +300,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                             Coin coin = (Coin) sprite;
                             coinCount++;
                             sprites.remove(coin);
-                            Log.d("chad", "の例圧が・・・消えた？");
+                            //Log.d("chad", "の例圧が・・・消えた？");
                             mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
                             // ちゃり〜ん
                             coin.play();
@@ -300,6 +342,9 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 canvas.drawText("Time:"+Time / 33,screen_width-300,50,paint);
 
  //描画開始
+                //Log.d("Size", ""+scale);
+                
+                
                 holder.unlockCanvasAndPost(canvas);
 
                 Time--;
@@ -313,15 +358,26 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 }
                 player.update();
 
-                timer++;
-                if(timer == 10 && count==1){
-                    count = 0;
-                    timer=0;
-                }else if(timer == 10 && count==0){
-                    count = 1;
-                    timer = 0;
+                if(player.getVX() != 0) playerTimer++;
+                
+                if(playerTimer == 7 && playerCount==1){
+                    playerCount = 0;
+                    playerTimer=0;
+                }else if(playerTimer == 7 && playerCount==0){
+                    playerCount = 1;
+                    playerTimer = 0;
                 }
-                Thread.sleep(30);
+                
+                timer++;
+                if(timer == 10 && count == 1){
+                	count = 0;
+                	timer = 0;
+                }else if(timer == 10 && count == 0){
+                	count = 1;
+                	timer = 0;
+                }
+                
+                Thread.sleep(20);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -335,6 +391,9 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         Log.d(LOG, "surfaceChanged");
         screen_width = w;
         screen_height = h;
+   /*     scaleX = w / VIEW_WIDTH;
+        scaleY = h / VIEW_HEIGHT;
+        scale = scaleX > scaleY ? scaleY : scaleX;*/
     }
 
 

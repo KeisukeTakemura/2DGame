@@ -36,7 +36,7 @@ public class Srime extends Sprite{
 
     public void draw(Canvas c, Paint p,int offsetX, int offsetY,int count){
         p.setColor(Color.BLUE);
-        Rect src = new Rect(count*size,0,count*size+size,size);
+        Rect src = new Rect(count*96,0,count*96+96,96);
         Rect dst = new Rect((int)x+offsetX ,(int)y+offsetY , (int)x+offsetX+size, (int)y+offsetY+size);
         //canvas.drawBitmap(dragon, px+offsetX ,py,paint);// px+size+offsetX, py+size, paint);
         c.drawBitmap(this.image, src,dst,p);

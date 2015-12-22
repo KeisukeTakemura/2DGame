@@ -18,6 +18,10 @@ public class MainActivity extends Activity {
     private SurfaceView surV;
     private SuperSurface msurV;
     static int stage;
+    
+    public ImageButton direction;
+    public ImageButton a;
+    public ImageButton b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,9 @@ public class MainActivity extends Activity {
 
 //set Button
         //Button right = (Button)findViewById(R.id.RightButton);
-        ImageButton direction = (ImageButton) findViewById(R.id.DirButton);
-        ImageButton a = (ImageButton) findViewById(R.id.jump);
-        ImageButton b = (ImageButton) findViewById(R.id.weapon);
+        direction = (ImageButton) findViewById(R.id.DirButton);
+        a = (ImageButton) findViewById(R.id.jump);
+        b = (ImageButton) findViewById(R.id.weapon);
 
 //set Listener
         //right.setOnTouchListener(rightTouch);
@@ -59,7 +63,7 @@ public class MainActivity extends Activity {
             case 1:
                 return new Point(150, 200);
             case 2:
-                return new Point(150, 4800);
+                return new Point(150, 480);
             case 3:
                 return new Point(150, 200);
         }
@@ -73,11 +77,13 @@ public class MainActivity extends Activity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:    //タッチする
                     msurV.player.jump();
+                    a.setImageResource(R.drawable.qqqq);
                     break;
                 case MotionEvent.ACTION_MOVE:    //タッチしたまま動かす
                     break;
 
                 case MotionEvent.ACTION_UP:        //指を離す
+                	a.setImageResource(R.drawable.a_button);
                     break;
             }
             return true;
@@ -91,11 +97,13 @@ public class MainActivity extends Activity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:    //タッチする
                     msurV.player.beam();
+                    b.setImageResource(R.drawable.qqqq);
                     break;
                 case MotionEvent.ACTION_MOVE:    //タッチしたまま動かす
                     break;
                 case MotionEvent.ACTION_UP:        //指を離す
                     msurV.player.beamout();
+                    b.setImageResource(R.drawable.b_button);
                     break;
             }
             return true;
@@ -135,20 +143,25 @@ public class MainActivity extends Activity {
                 case MotionEvent.ACTION_DOWN:    //タッチする
                     if (x < w / 2) {
                         msurV.player.accelerateLeft();
+                        direction.setImageResource(R.drawable.qqqq);
                     } else {
                         msurV.player.accelerateRight();
+                        direction.setImageResource(R.drawable.enemy);
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:    //タッチしたまま動かす
                     if (x < w / 2) {
                         msurV.player.accelerateLeft();
+                        direction.setImageResource(R.drawable.qqqq);
                     } else {
                         msurV.player.accelerateRight();
+                        direction.setImageResource(R.drawable.enemy);
                     }
                     break;
 
                 case MotionEvent.ACTION_UP:        //指を離す
                     msurV.player.stop();
+                    direction.setImageResource(R.drawable.dir_key);
                     break;
             }
             return true;
