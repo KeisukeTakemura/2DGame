@@ -13,7 +13,7 @@ import sprite.Sprite;
 
 public class Player{
     private static final int JUMP_SPEED = 70;
-    public int SPEED = 15;
+    public int SPEED = 22;
 
     private double x;
     private double y;

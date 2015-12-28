@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import data.Map;
 import sprite.Coin;
 import sprite.Goal;
+import sprite.Shot;
 import sprite.Sprite;
 import sprite.Srime;
 
@@ -59,6 +60,13 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     public int count = 0;
     public int playerTimer = 0;
     public int playerCount = 0;
+    
+  //shot
+    private static final int NUM_SHOT = 5;
+    private Shot[] shots;
+    private static final int SHOT_CHARGE_TIME = 300;
+    private long lastFire = 0;;
+    
     
     float scale = getResources().getDisplayMetrics().density;
  //画面サイズの設定
@@ -138,10 +146,16 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         //Log.d("x:", "" + screen_width);
         //Log.d("y:",""+screen_height);
     	
+    	
+    	
     	//TILE_SIZE = block.getWidth();
 		TILE_SIZE =(screen_width / TILE_WIDTH_NUM);
 		//怒りのfloat祭り
 		Mult = (float)((float)((float)screen_width / (float)TILE_WIDTH_NUM) / (float)block.getWidth());
+		
+
+        int width = (int)(block.getWidth() * Mult);
+        int height = (int)(block.getHeight() * Mult);
 		
 		 loadMap();
 		//Log.d("Size", ""+TILE_SIZE);
@@ -164,8 +178,15 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
 
         int mapX = m.getMap()[0].length;
         int mapY = m.getMap().length;
+        
+        shots = new Shot[NUM_SHOT];
+        for (int i = 0; i < NUM_SHOT; i++) {
+            shots[i] = new Shot(block,m);
+        }
 
         while (thread != null) {
+        	
+        	
 
             //オフセット計算
             int offsetX = screen_width / 2 - (int)player.getX();
@@ -177,32 +198,30 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
             int offsetY = screen_height / 2 - (int)player.getY() - 105;
             offsetY = Math.min(offsetY,0);
             offsetY = Math.max(offsetY, screen_height - mapY*TILE_SIZE);
-
+            
+            if(testflag){
             int maaa[][] = m.getMap();
+            
             for (int y = 0; y < maaa.length; y++) {
                 for (int x = 0; x < maaa[0].length; x++) {
                     switch (m.getMap()[y][x]) {
                         case 2:
-                            if(testflag) {
                                 sprites.add(new Coin(x, y, TILE_SIZE, coin, m));
-                            }
+                                Log.d("keisan", "sareteru");
                             break;
                         case 3:
-                            if(testflag){
                                 sprites.add(new Goal(x,y,TILE_SIZE,goal,m,true));
-                            }
                             break;
                         case 4:
-                            if(testflag){
                                 sprites.add(new Srime(x*TILE_SIZE,y*TILE_SIZE,TILE_SIZE,ppp,m));
-                            }
                             break;
                     }
                 }
             }
             testflag = false;
+            }
 
-
+            
 
             try {
 
@@ -227,17 +246,17 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 int firstTileY = Map.pixelsToTiles(-offsetY);
                 int lastTileY = firstTileY + Map.pixelsToTiles(mapY*TILE_SIZE) + 1;
                 lastTileY = Math.min(lastTileY, mapY);
-
-
+                
 
                 paint.setColor(Color.GREEN);
                 for (int y = firstTileY; y < lastTileY; y++) {
                     for (int x = firstTileX; x < lastTileX; x++) {
+                    	//Log.d("tile", ""+firstTileY);
                         switch (m.getMap()[y][x]) {
                             case 1:
                                 //canvas.drawRect(TILE_SIZE * x + offsetX, TILE_SIZE * y, TILE_SIZE * x + TILE_SIZE+offsetX, TILE_SIZE * y + TILE_SIZE, paint);
-                                int width = (int)(block.getWidth() * Mult);
-                                int height = (int)(block.getHeight() * Mult);
+                               //int width = (int)(block.getWidth() * Mult);
+                                //int height = (int)(block.getHeight() * Mult);
                                 //Log.d("tes7uyfgd", ""+ width);
                                 Rect src = new Rect(0,0,block.getWidth(),block.getHeight());
                                 Rect dst = new Rect(width*x+offsetX, height*y+offsetY,width*x+offsetX+width, height*y+offsetY+height);
@@ -265,6 +284,8 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 }
                 testflag = false;
 //プレイヤーの描画
+                
+                
 
                 int px = (int)player.getX();
                 int py = (int)player.getY();
@@ -276,12 +297,38 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 //canvas.drawBitmap(dragon, px+offsetX ,py,paint);// px+size+offsetX, py+size, paint);
                canvas.drawBitmap(dragon, src,dst,paint);
                //canvas.drawBitmap(vvvv, src,dst,paint);
+               
+               for (int i = 0; i < NUM_SHOT; i++) {
+                   shots[i].move();
+               }
 
                 if(player.getB()){
                     paint.setColor(Color.GREEN);
                     paint.setTextSize(20);
-                    canvas.drawText("ビーム発射！",px+offsetX-30 ,py+offsetY-20,paint);
+                    
+                 // 前との発射間隔がFIRE_INTERVAL以下だったら発射できない
+                    if (System.currentTimeMillis() - lastFire < SHOT_CHARGE_TIME) {
+                    }else{
+
+                    lastFire = System.currentTimeMillis();
+                    
+                    for (int i = 0; i < NUM_SHOT; i++) {
+                        if (shots[i].isInStorage()) {
+                        	//Log.d("map", m);
+                            shots[i].setPos(px,py-2);
+                            break;
+                        }
+                    }
+                    }
+                    
+                    canvas.drawText("ビーム発射！",px+offsetX ,py+offsetY,paint);
                 }
+                    
+                    for (int i = 0; i < NUM_SHOT; i++) {
+                    	shots[i].offsetX = offsetX;
+                    	shots[i].offsetY = offsetY;
+                        shots[i].draw(canvas,paint);
+                    }
 
                // player.draw(canvas,paint,offsetX,offsetY,count);
 
@@ -292,7 +339,6 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     sprite.draw(canvas, paint, offsetX, offsetY, count);
                     sprite.update();
                     if (player.isCollision(sprite)) {
-                        //Log.d("chad", "の例圧が・・・消えた？");
                         // それがコインだったら
                         if (sprite instanceof Coin) {
 
@@ -300,9 +346,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                             Coin coin = (Coin) sprite;
                             coinCount++;
                             sprites.remove(coin);
-                            //Log.d("chad", "の例圧が・・・消えた？");
                             mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
-                            // ちゃり〜ん
                             coin.play();
                             // spritesから削除したので
                             // breakしないとiteratorがおかしくなる
@@ -332,6 +376,22 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                             //Thread.sleep(2000);
                             break;
                         }
+                    }
+                    
+//////////////////////
+                   for (int i = 0; i < NUM_SHOT; i++) {
+                    if (shots[i].isCollision(sprite)) {
+                    
+                    if (shots[i].isCollision(sprite)) {
+                        if (sprite instanceof Srime) {
+                            //mediaPlayer.stop();
+                            ((Srime) sprite).death();
+                            shots[i].store();
+                            break;
+                        }
+                    }
+                    
+                    }
                     }
                 }
 
@@ -415,5 +475,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         mediaPlayer.stop();
         thread = null;
     }
+    
+
 
 }
