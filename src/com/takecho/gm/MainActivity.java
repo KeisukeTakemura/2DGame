@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -77,7 +78,7 @@ public class MainActivity extends Activity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:    //タッチする
                     msurV.player.jump();
-                    a.setImageResource(R.drawable.qqqq);
+                    a.setImageResource(R.drawable.a_button_push);
                     break;
                 case MotionEvent.ACTION_MOVE:    //タッチしたまま動かす
                     break;
@@ -97,7 +98,7 @@ public class MainActivity extends Activity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:    //タッチする
                     msurV.player.beam();
-                    b.setImageResource(R.drawable.qqqq);
+                    b.setImageResource(R.drawable.b_button_push);
                     break;
                 case MotionEvent.ACTION_MOVE:    //タッチしたまま動かす
                     break;
@@ -143,19 +144,19 @@ public class MainActivity extends Activity {
                 case MotionEvent.ACTION_DOWN:    //タッチする
                     if (x < w / 2) {
                         msurV.player.accelerateLeft();
-                        direction.setImageResource(R.drawable.qqqq);
+                        direction.setImageResource(R.drawable.dir_key_left);
                     } else {
                         msurV.player.accelerateRight();
-                        direction.setImageResource(R.drawable.enemy);
+                        direction.setImageResource(R.drawable.dir_key_right);
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:    //タッチしたまま動かす
                     if (x < w / 2) {
                         msurV.player.accelerateLeft();
-                        direction.setImageResource(R.drawable.qqqq);
+                        direction.setImageResource(R.drawable.dir_key_left);
                     } else {
                         msurV.player.accelerateRight();
-                        direction.setImageResource(R.drawable.enemy);
+                        direction.setImageResource(R.drawable.dir_key_right);
                     }
                     break;
 
@@ -168,6 +169,12 @@ public class MainActivity extends Activity {
         }
     };
 
+    
+    public void changeWeapon(View v){
+    	Log.d("test","change");
+    	
+    	//ここに処理を記述
+    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

@@ -32,12 +32,24 @@
             android:scaleType="fitXY"
             android:src="@drawable/dir_key"
             android:textSize="100sp" />
+        
+        <ImageButton
+            android:id="@+id/change_weapon"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            android:src="@drawable/b_button"
+            android:text="@string/B"
+            android:textSize="100sp"
+            android:onClick="changeWeapon" />
 
         <ImageButton
             android:id="@+id/weapon"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="165dp"
+            android:layout_marginLeft="30dp"
             android:background="#00FFFFFF"
             android:scaleType="fitXY"
             android:src="@drawable/b_button"

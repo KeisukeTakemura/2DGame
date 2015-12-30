@@ -206,7 +206,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 for (int x = 0; x < maaa[0].length; x++) {
                     switch (m.getMap()[y][x]) {
                         case 2:
-                                sprites.add(new Coin(x, y, TILE_SIZE, coin, m));
+                                sprites.add(new Coin(x, y,TILE_SIZE, coin, m));
                                 Log.d("keisan", "sareteru");
                             break;
                         case 3:
@@ -315,7 +315,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     for (int i = 0; i < NUM_SHOT; i++) {
                         if (shots[i].isInStorage()) {
                         	//Log.d("map", m);
-                            shots[i].setPos(px,py-2);
+                            shots[i].setPos(px+player.getSize()/2,py-player.getSize()/2);
                             break;
                         }
                     }
