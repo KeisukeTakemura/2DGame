@@ -1,17 +1,23 @@
 package com.takecho.gm;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
@@ -23,6 +29,8 @@ public class MainActivity extends Activity {
     public ImageButton direction;
     public ImageButton a;
     public ImageButton b;
+    
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,8 @@ public class MainActivity extends Activity {
         direction.setOnTouchListener(dirTouch);
         a.setOnTouchListener(aTouch);
         b.setOnTouchListener(bTouch);
+        
+        
 
     }
 
@@ -170,11 +180,59 @@ public class MainActivity extends Activity {
     };
 
     
+    
+    
     public void changeWeapon(View v){
-    	Log.d("test","change");
-    	
+    	Log.d("test","change"+ v.getId());
+    	   // 表示
+     //  DialogShow();
     	//ここに処理を記述
+    	switch(v.getId()){
+    	case R.id.change_weapon1:
+    		Log.d("test","change"+ v.getId());
+    		msurV.weapon = 0;
+    		break;
+    	case R.id.change_weapon2:
+    		Log.d("test","change"+ v.getId());
+    		msurV.weapon = 1;
+    		break;
+    	case R.id.change_weapon3:
+    		Log.d("test","change");
+    		msurV.weapon = 2;
+    		break;
+   	}
     }
+    
+    public void DialogShow(View v){
+    //////////
+    //////////////////
+    // カスタムビューを設定
+    LayoutInflater inflater = (LayoutInflater)this.getSystemService(
+    				LAYOUT_INFLATER_SERVICE);
+    final View layout = inflater.inflate(R.layout.dialog,
+    			(ViewGroup)findViewById(R.id.layout_root));
+
+    // アラーとダイアログ を生成
+    builder = new AlertDialog.Builder(this);
+    builder.setTitle("ダイアログタイトル");
+    builder.setView(layout);
+    builder.setPositiveButton("OK", new OnClickListener () {
+        public void onClick(DialogInterface dialog, int which) {
+            // OK ボタンクリック処理
+            // ID と PASSWORD を取得
+           
+        }
+    });
+//    builder.setNegativeButton("Cancel", new OnClickListener() {
+//        public void onClick(DialogInterface dialog, int which) {
+//            // Cancel ボタンクリック処理
+//        }
+//    });
+    
+    builder.create().show();
+
+}
+//////////////////////////////////
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

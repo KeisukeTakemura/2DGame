@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import data.Map;
 import sprite.Coin;
 import sprite.Goal;
-import sprite.Shot;
+import sprite.Beam;
 import sprite.Sprite;
 import sprite.Srime;
 
@@ -63,9 +63,12 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     
   //shot
     private static final int NUM_SHOT = 5;
-    private Shot[] shots;
+    //private Shot[] shots;
+    private Beam[] shots;
     private static final int SHOT_CHARGE_TIME = 300;
-    private long lastFire = 0;;
+    private long lastFire = 0;
+    
+    public int weapon = 0;
     
     
     float scale = getResources().getDisplayMetrics().density;
@@ -84,9 +87,9 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     public int coinCount = 0;
     public int Time = 9900;
 
-    private SoundPool mSoundPool;
-    private int mSoundId;
-    private MediaPlayer mediaPlayer;
+  //  private SoundPool mSoundPool;
+  //  private int mSoundId;
+  //  private MediaPlayer mediaPlayer;
 
 //スプライトリスト
     public LinkedList sprites = new LinkedList();
@@ -102,8 +105,8 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         loadMusic(context);
         loadImage();
        // loadMap();
-        mediaPlayer = MediaPlayer.create(context,R.raw.spring_come);
-        mediaPlayer.start();
+      //  mediaPlayer = MediaPlayer.create(context,R.raw.spring_come);
+      //  mediaPlayer.start();
     }
     
     private void loadMap(){
@@ -114,8 +117,8 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     }
 
     private void loadMusic(Context context){
-        mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        mSoundId = mSoundPool.load(context, R.raw.coin03,0);
+     //   mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+      //  mSoundId = mSoundPool.load(context, R.raw.coin03,0);
     }
 
 
@@ -179,9 +182,11 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         int mapX = m.getMap()[0].length;
         int mapY = m.getMap().length;
         
-        shots = new Shot[NUM_SHOT];
+        //shots = new Shot[NUM_SHOT];
+        shots = new Beam[NUM_SHOT];
         for (int i = 0; i < NUM_SHOT; i++) {
-            shots[i] = new Shot(block,m);
+            //shots[i] = new Shot(block,m);
+        	shots[i] = new Beam(block,m);
         }
 
         while (thread != null) {
@@ -207,13 +212,16 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     switch (m.getMap()[y][x]) {
                         case 2:
                                 sprites.add(new Coin(x, y,TILE_SIZE, coin, m));
-                                Log.d("keisan", "sareteru");
+                                //Log.d("keisan", "sareteru");
+                                Log.d("keisan", "sareteru"+screen_width);
                             break;
                         case 3:
                                 sprites.add(new Goal(x,y,TILE_SIZE,goal,m,true));
+                                //Log.d("keisan", "sareteruGoal");
                             break;
                         case 4:
                                 sprites.add(new Srime(x*TILE_SIZE,y*TILE_SIZE,TILE_SIZE,ppp,m));
+                               // Log.d("keisan", "sareteruSrime");
                             break;
                     }
                 }
@@ -229,7 +237,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                 canvas = holder.lockCanvas();
               //  canvas.translate((screen_width - VIEW_WIDTH)/2*scale, (screen_height - VIEW_HEIGHT)/2*scale);
               //  canvas.scale(scale, scale);
-
+                Log.d("keisan", "sareteru"+screen_width);
                 canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
                 
                 //Log.d("aaaaa", ""+(float)block.getWidth() * (float)Mult);
@@ -346,7 +354,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                             Coin coin = (Coin) sprite;
                             coinCount++;
                             sprites.remove(coin);
-                            mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
+                            //mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
                             coin.play();
                             // spritesから削除したので
                             // breakしないとiteratorがおかしくなる
@@ -357,7 +365,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                           /*  paint.setTextSize(300);
                             canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
                             canvas.drawText("GOOOAL!!", 230, 400, paint);*/
-                            mediaPlayer.stop();
+                          //  mediaPlayer.stop();
                             thread = null;
                             getContext().startActivity(new Intent(getContext(), GoalActivity.class));
                             //Thread.sleep(2000);
@@ -366,7 +374,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     }
                     if (player.isCollisionE(sprite)) {
                         if (sprite instanceof Srime) {
-                            mediaPlayer.stop();
+                            //mediaPlayer.stop();
                            /* paint.setTextSize(300);
                             canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
                             canvas.drawText("GAME OVER!!", 230, 400, paint);*/
@@ -409,7 +417,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
 
                 Time--;
                 if(player.getY()>=m.getRow()*TILE_SIZE-player.getSize()){
-                    mediaPlayer.stop();
+                   // mediaPlayer.stop();
                  /*   paint.setTextSize(300);
                     canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
                     canvas.drawText("GAME OVER!!", 230, 400, paint);*/
@@ -472,7 +480,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.d(LOG, "surfaceDestroyed");
-        mediaPlayer.stop();
+       // mediaPlayer.stop();
         thread = null;
     }
     

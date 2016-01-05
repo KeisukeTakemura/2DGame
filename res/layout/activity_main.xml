@@ -43,7 +43,7 @@
             android:src="@drawable/b_button"
             android:text="@string/B"
             android:textSize="100sp"
-            android:onClick="changeWeapon" />
+            android:onClick="DialogShow" />
 
         <ImageButton
             android:id="@+id/weapon"
