@@ -30,6 +30,8 @@ public class Srime extends Sprite{
     public void death(){
     	vx = 0;
     	vy = 0;
+    	x = -40;
+    	y = -40;
     	
     }
     

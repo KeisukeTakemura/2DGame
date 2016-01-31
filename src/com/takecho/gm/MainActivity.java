@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
     public ImageButton direction;
     public ImageButton a;
     public ImageButton b;
+    public ImageButton testButton;
     
     AlertDialog.Builder builder;
 
@@ -52,6 +53,8 @@ public class MainActivity extends Activity {
         direction = (ImageButton) findViewById(R.id.DirButton);
         a = (ImageButton) findViewById(R.id.jump);
         b = (ImageButton) findViewById(R.id.weapon);
+        testButton = (ImageButton) findViewById(R.id.weapon);
+        
 
 //set Listener
         //right.setOnTouchListener(rightTouch);
@@ -190,15 +193,15 @@ public class MainActivity extends Activity {
     	switch(v.getId()){
     	case R.id.change_weapon1:
     		Log.d("test","change"+ v.getId());
-    		msurV.weapon = 0;
+    		msurV.shotT = 0;
     		break;
     	case R.id.change_weapon2:
     		Log.d("test","change"+ v.getId());
-    		msurV.weapon = 1;
+    		msurV.shotT = 1;
     		break;
     	case R.id.change_weapon3:
     		Log.d("test","change");
-    		msurV.weapon = 2;
+    		msurV.shotT = 2;
     		break;
    	}
     }

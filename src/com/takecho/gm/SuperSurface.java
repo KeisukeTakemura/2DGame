@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import data.Map;
 import sprite.Coin;
 import sprite.Goal;
+import sprite.Shot;
 import sprite.Beam;
 import sprite.Sprite;
 import sprite.Srime;
@@ -47,10 +48,14 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     public Bitmap aaaa;
     public Bitmap vvvv;
     //public Bitmap block2;
+    public Bitmap beam1;
+    public Bitmap beam2;
+    public Bitmap beam3;
     
     public static int TILE_SIZE;
     public static int TILE_WIDTH_NUM = 20;
     public static float Mult;
+   
 //map,playerインスタンスの生成
     public  Map m;
     public Point p_point;
@@ -63,12 +68,13 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
     
   //shot
     private static final int NUM_SHOT = 5;
-    //private Shot[] shots;
-    private Beam[] shots;
+    private Shot[] shots;
+    //private Beam[] shots;
     private static final int SHOT_CHARGE_TIME = 300;
     private long lastFire = 0;
     
     public int weapon = 0;
+    public int shotT = 0;
     
     
     float scale = getResources().getDisplayMetrics().density;
@@ -135,6 +141,9 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         coin = BitmapFactory.decodeResource(res, R.drawable.elect);
         goal = BitmapFactory.decodeResource(res, R.drawable.goaltile);
         aaaa = BitmapFactory.decodeResource(res, R.drawable.player);
+        beam1 = BitmapFactory.decodeResource(res, R.drawable.beam11);
+        beam2 = BitmapFactory.decodeResource(res, R.drawable.beam22);
+        beam3 = BitmapFactory.decodeResource(res, R.drawable.beam33);
         
         //vvvv = Bitmap.createBitmap(aaaa, 0, 0, aaaa.getWidth(),aaaa.getHeight(), matrix,true);
         //TILE_SIZE = block.getWidth();
@@ -182,11 +191,11 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
         int mapX = m.getMap()[0].length;
         int mapY = m.getMap().length;
         
-        //shots = new Shot[NUM_SHOT];
-        shots = new Beam[NUM_SHOT];
+        shots = new Shot[NUM_SHOT];
+        //shots = new Beam[NUM_SHOT];
         for (int i = 0; i < NUM_SHOT; i++) {
-            //shots[i] = new Shot(block,m);
-        	shots[i] = new Beam(block,m);
+            shots[i] = new Shot(block,m,shotT,0);
+        	//shots[i] = new Beam(block,m);
         }
 
         while (thread != null) {
@@ -213,7 +222,7 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                         case 2:
                                 sprites.add(new Coin(x, y,TILE_SIZE, coin, m));
                                 //Log.d("keisan", "sareteru");
-                                Log.d("keisan", "sareteru"+screen_width);
+                                //Log.d("keisan", "sareteru"+screen_width);
                             break;
                         case 3:
                                 sprites.add(new Goal(x,y,TILE_SIZE,goal,m,true));
@@ -321,8 +330,16 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     lastFire = System.currentTimeMillis();
                     
                     for (int i = 0; i < NUM_SHOT; i++) {
+                    	shots[i].shotType = shotT;
+                    	if(shotT==1){
+                    	shots[i].image = beam2;
+                    	}else{
+                    		shots[i].image = beam1;
+                    	}
                         if (shots[i].isInStorage()) {
                         	//Log.d("map", m);
+                        	shots[i].dir = dir;
+                        	
                             shots[i].setPos(px+player.getSize()/2,py-player.getSize()/2);
                             break;
                         }
@@ -375,13 +392,13 @@ public class SuperSurface extends SurfaceView implements Callback,Runnable {
                     if (player.isCollisionE(sprite)) {
                         if (sprite instanceof Srime) {
                             //mediaPlayer.stop();
-                           /* paint.setTextSize(300);
-                            canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
-                            canvas.drawText("GAME OVER!!", 230, 400, paint);*/
-                            ((Srime) sprite).death();
-                            //thread = null;
-                            //getContext().startActivity(new Intent(getContext(), GameOverActivity.class));
-                            //Thread.sleep(2000);
+                           // paint.setTextSize(300);
+                           // canvas.drawRect(0, 0, screen_width, screen_height, bgPaint);
+                            //canvas.drawText("GAME OVER!!", 230, 400, paint);
+                            //((Srime) sprite).death();
+                            thread = null;
+                            getContext().startActivity(new Intent(getContext(), GameOverActivity.class));
+                            Thread.sleep(2000);
                             break;
                         }
                     }

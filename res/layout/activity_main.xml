@@ -40,7 +40,7 @@
             android:layout_marginLeft="30dp"
             android:background="#00FFFFFF"
             android:scaleType="fitXY"
-            android:src="@drawable/b_button"
+            android:src="@drawable/beam1"
             android:text="@string/B"
             android:textSize="100sp"
             android:onClick="DialogShow" />
